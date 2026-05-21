@@ -1,0 +1,7 @@
+__pycache__/
+src/arquivos/*
+src/dados_json/*
+src/dados_txt/*
+
+.env
+.venv

@@ -1,0 +1,28 @@
+Sobre a Empresa:
+Somos uma fintech em expansão e buscamos alguém para atuar no desenvolvimento de sistemas escaláveis e manutenção de APIs.
+
+Requisitos Técnicos (Hard Skills):
+
+Experiência sólida com Python e framework Django ou FastAPI.
+
+Domínio de bancos de dados relacionais (PostgreSQL ou MySQL).
+
+Conhecimento em front-end moderno: React.js ou Vue.js.
+
+Experiência com ferramentas de containerização (Docker).
+
+Conhecimento em versionamento de código com Git.
+
+Desejável: Conhecimento básico em nuvem (AWS ou Azure).
+
+Habilidades Comportamentais (Soft Skills):
+
+Boa comunicação para trabalho em equipe utilizando metodologias ágeis (Scrum).
+
+Proatividade e foco em resolução de problemas complexos.
+
+Capacidade de aprendizado rápido de novas tecnologias.
+
+Experiência Desejada:
+
+Mínimo de 3 anos de experiência atuando na área de desenvolvimento de software.
