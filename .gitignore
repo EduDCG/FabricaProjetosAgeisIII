@@ -1,5 +1,5 @@
 __pycache__/
-# src/arquivos/*
+src/arquivos/*
 src/dados_json/*
 src/dados_txt/*
 
