@@ -3,5 +3,6 @@ src/arquivos/*
 src/dados_json/*
 src/dados_txt/*
 
+ranking_candidatos.txt
 .env
 .venv
