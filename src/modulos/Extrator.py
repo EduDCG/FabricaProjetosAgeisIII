@@ -1,36 +1,40 @@
 import os, pymupdf, json, docx2txt
 from groq import Groq
 from dotenv import load_dotenv
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=api_key)
 
-curriculos = "./src/arquivos"
-pasta_txt = "./src/dados_txt"
-pasta_json = "./src/dados_json"
+curriculos = Path("./src/arquivos")
+pasta_txt = Path("./src/dados_txt")
+pasta_json = Path("./src/dados_json")
 
 def extrairTxt():
     
-    if not os.path.exists(pasta_txt):
-        os.makedirs(pasta_txt)
+    pasta_txt.mkdir(parents=True, exist_ok=True)
 
     try:
 
-        if not os.listdir(curriculos):
+        if not any(curriculos.iterdir()):
             print("Nenhum arquivo encontrado para extrair.")
             return
 
-        for filename in os.listdir(curriculos):
+        for arquivo in curriculos.iterdir():
+
+            if not arquivo.is_file(): # pular se não for um arquivo
+                continue
+            
+            filename = arquivo.name
 
             # para arquivos PDF
             if filename.endswith(".pdf"):
-                caminho_pdf = os.path.join(curriculos, filename)
                 print(f"Processando {filename}...")
 
                 # abre o documento
-                doc = pymupdf.open(caminho_pdf)
+                doc = pymupdf.open(arquivo)
                 texto_completo = ""
 
                 # extrai texto das páginas
@@ -39,20 +43,19 @@ def extrairTxt():
 
                 # salva em .txt
                 nome_arquivo = filename.replace(".pdf", ".txt")
-                caminho_txt = os.path.join(pasta_txt, nome_arquivo)
+                caminho_txt = pasta_txt / nome_arquivo
 
                 with open(caminho_txt, "w", encoding="utf-8") as f:
                     f.write(texto_completo)
             
             # para arquivos Word
             if filename.endswith(".docx"):
-                caminho_docx = os.path.join(curriculos, filename)
                 print(f"Processando {filename}...")
 
-                texto_completo = docx2txt.process(caminho_docx)
+                texto_completo = docx2txt.process(str(arquivo))
 
                 nome_arquivo = filename.replace(".docx", ".txt")
-                caminho_txt = os.path.join(pasta_txt, nome_arquivo)
+                caminho_txt = pasta_txt / nome_arquivo
 
                 with open(caminho_txt, "w", encoding="utf-8") as f:
                     f.write(texto_completo)

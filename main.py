@@ -10,7 +10,12 @@ def main():
             vaga_atual = f.read()
 
         # print(f"\nVaga atual: {vaga_atual}")
-        print(f"1: Alterar vaga\n2: Converter currículos\n3: Calcular ranking\nQ: Sair\n")
+        print(f"1: Alterar vaga")
+        print(f"2: Converter currículos para .txt")
+        print(f"3: Analisar currículos")
+        print(f"4: Calcular ranking")
+        print(f"Q: Sair")
+
         op = input()
         op = op.lower()
 
@@ -24,9 +29,11 @@ def main():
 
         elif op == "2":
             Extrator.extrairTxt()
+            
+        elif op == "3":
             Extrator.gerarJsons()
 
-        elif op == "3":
+        elif op == "4":
             print("\n")
             Ranking.calcularRanking(vaga_atual)
 
