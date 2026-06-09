@@ -7,19 +7,18 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 stop_words_pt = stopwords.words('portuguese')
 
-def calcularRanking(desc_vaga):
 
-    pasta_json = "./src/dados_json"
+def carregarCandidatos(pasta_json):
 
     if not os.path.exists(pasta_json):
         print(f"Pasta {pasta_json} não encontrada.")
-        return
+        return [], []
 
     arquivos = [f for f in os.listdir(pasta_json) if f.endswith(".json")]
 
     if not arquivos:
         print("Nenhum JSON encontrado para rankear.")
-        return
+        return [],[]
 
     candidatos = []
     textos_candidatos = []
@@ -31,18 +30,56 @@ def calcularRanking(desc_vaga):
 
         with open(caminho_completo, "r", encoding="utf-8") as f:
 
-            dados = json.load(f)
+            try:
+                dados = json.load(f)
+            except json.JSONDecodeError:
+                print(f"Erro: {filename} não é um JSON válido. Pulando...")
+                continue
 
-            nome = dados.get("nome", "Desconhecido")
+            nome = dados.get("nome")
+            if not nome or nome == "null":
+                nome = filename.replace(".json", "")
 
-            hard_skills = " ".join(dados.get("hard_skills", []))
-            soft_skills = " ".join(dados.get("soft_skills", []))
-            resumo = dados.get("resumo_profissional", "")
+            # tratamento das hard skills
+            hard_skills_bruto = dados.get("hard_skills") 
+            if isinstance(hard_skills_bruto, list):
+                hard_skills = " ".join([str(skill) for skill in hard_skills_bruto if skill])
+            elif isinstance(hard_skills_bruto, str) and hard_skills_bruto != "null":
+                hard_skills = hard_skills_bruto
+            else:
+                hard_skills = ""
 
-            texto_final = f"{resumo} {hard_skills} {soft_skills}"
+            # tratamento das soft skills
+            soft_skills_bruto = dados.get("soft_skills") 
+            if isinstance(soft_skills_bruto, list):
+                soft_skills = " ".join([str(skill) for skill in soft_skills_bruto if skill])
+            elif isinstance(soft_skills_bruto, str) and soft_skills_bruto != "null":
+                soft_skills = soft_skills_bruto
+            else:
+                soft_skills = ""
 
-            candidatos.append(nome)
-            textos_candidatos.append(texto_final)
+            resumo = dados.get("resumo_profissional")
+            if not resumo or resumo == "null":
+                resumo = ""
+
+            texto_final = f"{resumo} {hard_skills} {soft_skills}".strip()
+            
+            if texto_final:
+                candidatos.append(nome)
+                textos_candidatos.append(texto_final)
+            else:
+                print(f"Erro: O candidato possui dados vazios após a análise da IA.")
+
+    return candidatos, textos_candidatos
+
+
+def calcularRanking(desc_vaga):
+
+    candidatos, textos_candidatos = carregarCandidatos("./src/dados_json")
+
+    if not candidatos or not textos_candidatos:
+        print(f"Erro ao carregar candidatos.")
+        return
 
     # Junta vaga + currículos
     corpus = [desc_vaga] + textos_candidatos
