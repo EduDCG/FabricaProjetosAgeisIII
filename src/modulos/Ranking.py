@@ -5,7 +5,7 @@ import nltk
 from nltk.corpus import stopwords
 from pathlib import Path
 
-nltk.download('stopwords')
+nltk.download('stopwords', quiet=True)
 stop_words_pt = stopwords.words('portuguese')
 
 root = Path(__file__).resolve().parent.parent
