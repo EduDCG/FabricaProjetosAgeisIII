@@ -147,3 +147,19 @@ def calcularRanking(desc_vaga):
             arquivo.write(separador)
 
     print("Arquivo ranking_candidatos.txt gerado com sucesso!")
+
+
+def exibirRanking():
+    caminho_ranking = root.parent / "ranking_candidatos.txt"
+
+    if not caminho_ranking.exists():
+        print("AVISO: O arquivo ranking_candidatos.txt não foi encontrado. Tem certeza de que ele já foi gerado?")
+        return
+
+    try:
+        with open(caminho_ranking, "r", encoding="utf-8") as arquivo:
+            conteúdo = arquivo.read()
+            print(conteúdo)
+            
+    except Exception as e:
+        print(f"Erro ao ler o arquivo de ranking: {e}")

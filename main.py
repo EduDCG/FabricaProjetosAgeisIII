@@ -25,6 +25,7 @@ def main():
         print(f"3: Analisar currículos")
         print(f"4: Calcular ranking")
         print(f"5: Processar tudo")
+        print(f"6: Exibir ranking")
         print(f"Q: Sair")
         print("".center(largura_separador, "=")) 
         print(f"Escolha uma opção: ", end="")
@@ -50,6 +51,15 @@ def main():
 
         elif op == "4":
             Ranking.calcularRanking(vaga_atual)
+        
+        elif op == "5":
+            Extrator.extrairTxt()
+            Extrator.gerarJsons()
+            Ranking.calcularRanking(vaga_atual)
+
+        elif op == "6":
+            print(f"\n")
+            Ranking.exibirRanking()
 
         else:
             print("\nOpção inválida.")

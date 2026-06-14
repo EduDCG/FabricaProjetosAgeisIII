@@ -79,6 +79,7 @@ def extrairJson(texto_pdf):
             "'soft_skills': ['lista', 'de', 'strings'], "
             "'experiencia_anos': int, "
             "'resumo_profissional': 'string'}"
+            "NÃO adicione campos novos."
         )
     }
 
