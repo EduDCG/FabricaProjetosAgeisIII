@@ -3,10 +3,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 from nltk.corpus import stopwords
+from pathlib import Path
 
 nltk.download('stopwords')
 stop_words_pt = stopwords.words('portuguese')
 
+root = Path(__file__).resolve().parent.parent
+pasta_json = root / "dados_json"
 
 def carregarCandidatos(pasta_json):
 
@@ -14,7 +17,7 @@ def carregarCandidatos(pasta_json):
         print(f"Pasta {pasta_json} não encontrada.")
         return [], []
 
-    arquivos = [f for f in os.listdir(pasta_json) if f.endswith(".json")]
+    arquivos = [f.name for f in pasta_json.iterdir() if f.is_file() and f.name.endswith(".json")]
 
     if not arquivos:
         print("Nenhum JSON encontrado para rankear.")
@@ -26,7 +29,7 @@ def carregarCandidatos(pasta_json):
     # Ler JSONs
     for filename in arquivos:
 
-        caminho_completo = os.path.join(pasta_json, filename)
+        caminho_completo = pasta_json / filename
 
         with open(caminho_completo, "r", encoding="utf-8") as f:
 
@@ -75,7 +78,7 @@ def carregarCandidatos(pasta_json):
 
 def calcularRanking(desc_vaga):
 
-    candidatos, textos_candidatos = carregarCandidatos("./src/dados_json")
+    candidatos, textos_candidatos = carregarCandidatos(pasta_json)
 
     if not candidatos or not textos_candidatos:
         print(f"Erro ao carregar candidatos.")

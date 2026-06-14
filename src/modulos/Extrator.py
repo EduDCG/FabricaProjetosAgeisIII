@@ -8,12 +8,13 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=api_key)
 
-curriculos = Path("./src/arquivos")
-pasta_txt = Path("./src/dados_txt")
-pasta_json = Path("./src/dados_json")
+root = Path(__file__).resolve().parent.parent
+curriculos = root / "arquivos"
+pasta_txt = root / "dados_txt"
+pasta_json = root / "dados_json"
 
 def extrairTxt():
-    
+    curriculos.mkdir(parents=True, exist_ok=True)
     pasta_txt.mkdir(parents=True, exist_ok=True)
 
     try:
@@ -99,7 +100,7 @@ def extrairJson(texto_pdf):
 
 # função de processar arquivo (individualmente)
 def processarArquivo(arquivo):
-    caminho_txt = os.path.join(pasta_txt, arquivo)
+    caminho_txt = pasta_txt / arquivo
         
     with open(caminho_txt, "r", encoding="utf-8") as f:
         texto_cv = f.read()
@@ -113,7 +114,7 @@ def processarArquivo(arquivo):
         
         dados_conferidos = extrairJson(texto_cv) # usando a função da IA
         nome_json = arquivo.replace(".txt", ".json")
-        caminho_final = os.path.join(pasta_json, nome_json)
+        caminho_final = pasta_json / nome_json
 
         with open(caminho_final, "w", encoding="utf-8") as f_json:
             json.dump(dados_conferidos, f_json, indent=4, ensure_ascii=False)
@@ -125,8 +126,7 @@ def processarArquivo(arquivo):
 # transforma os .txt em .Json para organização melhor
 def gerarJsons():
 
-    if not os.path.exists(pasta_json):
-        os.makedirs(pasta_json)
+    pasta_txt.mkdir(parents=True, exist_ok=True)
 
     arquivos = [f for f in os.listdir(pasta_txt) if f.endswith(".txt")]
     

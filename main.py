@@ -1,12 +1,19 @@
-from src.modulos import Ranking
-from src.modulos import AlterarVaga, Extrator
+from pathlib import Path
+from src.modulos import AlterarVaga, Extrator, Ranking
+
+root = Path(__file__).resolve().parent
 
 def main():
+
+    caminho_vaga = root / "vaga.txt"
+    if not caminho_vaga.exists():
+        with open(caminho_vaga, "w", encoding="utf-8") as f:
+            f.write("Descreva os requisitos da vaga aqui.")
 
     while True:
 
         vaga_atual = ""
-        with open("vaga.txt", "r", encoding="utf-8") as f:
+        with open(caminho_vaga, "r", encoding="utf-8") as f:
             vaga_atual = f.read()
 
         # print(f"\nVaga atual: {vaga_atual}")
